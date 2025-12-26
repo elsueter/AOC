@@ -12,21 +12,18 @@ fn euc_mod(mut val: i32, modulo: i32) -> i32 {
 pub fn part1(lines: &Vec<String>) -> utils::Solution {
     let mut tot = 50;
     let mut count = 0;
+    let target_char = 76;
     for line in lines {
-        let dir = line.chars().next().unwrap();
+        let dir: i8 = line.chars().next().unwrap() as i8;
         let mut val: i32 = line[1..].parse().unwrap();
 
-        if dir == 'L' {
-            val *= -1;
-        }
+        val *= 1 - (dir == target_char) as i32 - (dir == target_char) as i32;
 
-        tot += val;
+        tot = euc_mod(tot + val, 100);
 
-        tot = euc_mod(tot, 100);
-
-        if tot == 0 {
-            count += 1;
-        }
+        let mut y = -tot;
+        y = !y;
+        count -= y >> 31;
     }
 
     return_sol!(count)
@@ -56,13 +53,11 @@ pub fn part2(lines: &Vec<String>) -> utils::Solution {
             _ => (),
         };
 
-        tot += val;
+        tot = euc_mod(tot + val, 100);
 
-        tot = euc_mod(tot, 100);
-
-        if tot == 0 {
-            count += 1;
-        }
+        let mut y = -tot;
+        y = !y;
+        count -= y >> 31;
     }
 
     return_sol!(count)
